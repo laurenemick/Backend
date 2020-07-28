@@ -1,5 +1,5 @@
-//package com.watermyplants.backend.Config;
-//
+package com.watermyplants.backend.Config;
+
 //import org.h2.tools.Server;
 //import org.springframework.beans.factory.annotation.Value;
 //import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;

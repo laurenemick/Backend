@@ -32,7 +32,6 @@ public class UserController
         List<User> myList = userServices.listAll();
         return new ResponseEntity<>(myList, HttpStatus.OK);
     }
-    @PreAuthorize("hasAnyRole('')")
     @PostMapping(value = "/user")
     public ResponseEntity<?> newUser(@Validated @RequestBody User newUser) throws URISyntaxException
     {
@@ -47,7 +46,7 @@ public class UserController
         return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasAnyRole('USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping(value = "/myinfo")
     @ResponseBody
     public ResponseEntity<?> getUserInfo(Principal principal)

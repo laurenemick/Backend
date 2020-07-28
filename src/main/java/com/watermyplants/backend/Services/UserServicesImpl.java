@@ -50,7 +50,7 @@ public class UserServicesImpl implements UserServices
                 .clear();
         for (UserRoles ur : user.getRoles())
         {
-            Role addRole = roleService.findRoleById(3);
+            Role addRole = roleService.findByName("USER");
             newUser.getRoles()
                     .add(new UserRoles(newUser, addRole));
         }

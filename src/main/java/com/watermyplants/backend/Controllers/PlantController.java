@@ -35,9 +35,16 @@ public class PlantController
     }
 
     @PutMapping("/plant/{id}")
-    public ResponseEntity<?> updatePlant(@PathVariable long id, Principal principal)
+    public ResponseEntity<?> updatePlant(@PathVariable long id, @RequestBody Plant updatedPlant, Principal principal)
     {
-        plantService.update(id, principal.getName());
+        Plant updatedDone = plantService.update(id, updatedPlant, principal.getName());
+        return new ResponseEntity<>(updatedDone, HttpStatus.OK);
+    }
 
+    @DeleteMapping("/plant/{id}")
+    public ResponseEntity<?> deletePlant(@PathVariable long id, Principal principal)
+    {
+        plantService.delete(id, principal.getName());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

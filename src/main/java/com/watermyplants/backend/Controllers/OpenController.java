@@ -91,39 +91,8 @@ public class OpenController
                 .toUri();
         responseHeaders.setLocation(newUserURI);
 
-        // return the access token
-        // To get the access token, surf to the endpoint /login just as if a client had done this.
-        RestTemplate restTemplate = new RestTemplate();
-        String requestURI = "http://" + httpServletRequest.getServerName() + ":" + httpServletRequest.getLocalPort() + "/login";
 
-        List<MediaType> acceptableMediaTypes = new ArrayList<>();
-        acceptableMediaTypes.add(MediaType.APPLICATION_JSON);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        headers.setAccept(acceptableMediaTypes);
-        headers.setBasicAuth(System.getenv("OAUTHCLIENTID"),
-                System.getenv("OAUTHCLIENTSECRET"));
-
-        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-        map.add("grant_type",
-                "password");
-        map.add("scope",
-                "read write trust");
-        map.add("username",
-                newminuser.getUsername());
-        map.add("password",
-                newminuser.getPassword());
-
-        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map,
-                headers);
-
-        String theToken = restTemplate.postForObject(requestURI,
-                request,
-                String.class);
-
-        return new ResponseEntity<>(theToken,
-                responseHeaders,
+        return new ResponseEntity<>(responseHeaders,
                 HttpStatus.CREATED);
     }
 

@@ -9,5 +9,7 @@ public interface PlantService
 {
     List<Plant> listPlants(String name);
     void addPlant(Plant newPlant, String name);
-    void update(long id, String name);
+    Plant update(long id, Plant updatedPlant, String name);
+    Plant findById(long id);
+    void delete(long id, String Name);
 }

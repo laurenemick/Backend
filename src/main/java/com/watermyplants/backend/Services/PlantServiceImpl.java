@@ -40,7 +40,52 @@ public class PlantServiceImpl implements PlantService
     }
 
     @Override
-    public void update(long id, String name) {
+    public Plant update(long id, Plant updatedPlant, String name) {
+        User u = userRepository.findByUsername(name);
+        Plant p = plantRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Plant " + id + " not found"));
+        Boolean found = false;
+
+        for(Plant pu: u.getPlants())
+        {
+            if(pu.getUser().getUsername() == u.getUsername())
+            {
+                found = true;
+            }
+        }
+
+        if(found == false)
+        {
+            plantRepository.findById((long) -1).orElseThrow(()->new ResourceNotFoundException("Plant " + id + " does not belong to user " + u.getUsername()));
+        }else
+        {
+            if(updatedPlant.getH2ofrequency() != null)
+            {
+                p.setH2ofrequency(updatedPlant.getH2ofrequency());
+            }
+            if(updatedPlant.getImageurl() != null)
+            {
+                p.setImageurl(updatedPlant.getImageurl());
+            }
+            if(updatedPlant.getSpecies() != null)
+            {
+                p.setSpecies(updatedPlant.getSpecies());
+            }
+            if(updatedPlant.getNickname() != null)
+            {
+                p.setNickname(updatedPlant.getNickname());
+            }
+        }
+        return plantRepository.save(p);
+    }
+
+    @Override
+    public Plant findById(long id) {
+        return plantRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("Plant " + id + " not found"));
+    }
+
+    @Override
+    public void delete(long id, String name) {
         User u = userRepository.findByUsername(name);
         Plant p = plantRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Plant " + id + " not found"));
         Boolean found = false;

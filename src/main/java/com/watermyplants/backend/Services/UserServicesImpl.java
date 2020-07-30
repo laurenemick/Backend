@@ -99,13 +99,7 @@ public class UserServicesImpl implements UserServices
 
     @Transactional
     @Override
-    public void delete(long id, User user) {
-        if(user.getId() != id)
-        {
-            throw new ResourceNotFoundException("You may only delete you own account!");
-        }else
-        {
-            userRepository.deleteById(id);
-        }
+    public void delete(long id) {
+        userRepository.deleteById(id);
     }
 }

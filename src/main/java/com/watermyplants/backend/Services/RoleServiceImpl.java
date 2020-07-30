@@ -65,12 +65,6 @@ public class RoleServiceImpl implements RoleService
             throw new ResourceNotFoundException("No role name found to update!");
         }
 
-        if (role.getUsers()
-                .size() > 0)
-        {
-            throw new ResourceFoundException("User Roles are not updated through Role. See endpoint POST: users/user/{userid}/role/{roleid}");
-        }
-
         Role newRole = findRoleById(id); // see if id exists
 
         roleRepository.updateRoleName(userAuditing.getCurrentAuditor()

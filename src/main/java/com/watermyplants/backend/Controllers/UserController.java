@@ -64,11 +64,11 @@ public class UserController
         return new ResponseEntity<>(newUser, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping(value = "/user/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable long id,Authentication authentication)
+    public ResponseEntity<?> deleteUser(@PathVariable long id)
     {
-        User requestingUser = userServices.findByUsername(authentication.getName());
-        userServices.delete(id, requestingUser);
+        userServices.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

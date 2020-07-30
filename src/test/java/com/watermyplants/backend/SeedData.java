@@ -45,12 +45,12 @@ public class SeedData implements CommandLineRunner
         role2 = roleRepository.save(role2);
         role3 = roleRepository.save(role3);
 
-        List<Role> myList = new ArrayList<>();
-        roleRepository.findAll().iterator().forEachRemaining(myList::add);
-        for(Role r: myList)
-        {
-            System.out.println("Role:" + r.getName() + " " + r.getRoleid());
-        }
+//        List<Role> myList = new ArrayList<>();
+//        roleRepository.findAll().iterator().forEachRemaining(myList::add);
+//        for(Role r: myList)
+//        {
+//            System.out.println("Role:" + r.getName() + " " + r.getRoleid());
+//        }
         //make sample users starting with the admin acc
         User u1 = new User("admin", "admin@admin.com", "12345678", "password");
         u1.getRoles().add(new UserRoles(u1, role1));

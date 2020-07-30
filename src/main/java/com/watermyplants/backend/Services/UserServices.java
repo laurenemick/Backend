@@ -17,5 +17,5 @@ public interface UserServices
 
     User update(UserMinimum user, long id);
 
-    void delete(long id, User user);
+    void delete(long id);
 }

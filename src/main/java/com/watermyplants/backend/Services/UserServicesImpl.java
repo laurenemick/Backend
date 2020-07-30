@@ -1,11 +1,9 @@
 package com.watermyplants.backend.Services;
 
-import com.watermyplants.backend.Models.Plant;
-import com.watermyplants.backend.Models.Role;
-import com.watermyplants.backend.Models.User;
-import com.watermyplants.backend.Models.UserRoles;
+import com.watermyplants.backend.Models.*;
 import com.watermyplants.backend.Repositories.UserRepository;
 import com.watermyplants.backend.exceptions.ResourceNotFoundException;
+import net.bytebuddy.dynamic.loading.PackageDefinitionStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -77,18 +75,15 @@ public class UserServicesImpl implements UserServices
 
     @Transactional
     @Override
-    public User update(User user, long id) {
+    public User update(UserMinimum user, long id) {
             User updateUser = userRepository.findById(id)
                     .orElseThrow(()->new ResourceNotFoundException("User " + id + " not found"));
-            if(user.getUsername() != null)
-            {
-                updateUser.setUsername(user.getUsername());
-            }
+
             if(user.getPassword() != null && user.getPassword() != "")
             {
-                updateUser.setPasswordNoEncrypt(user.getPassword());
+                updateUser.setPassword(user.getPassword());
             }
-            if(user.getEmail() != null)
+            if(user.getEmail() != null )
             {
                 updateUser.setEmail(user.getEmail());
             }
@@ -98,14 +93,6 @@ public class UserServicesImpl implements UserServices
                 updateUser.setPhone(user.getPhone());
             }
 
-            if(user.getPlants().size() > 0)
-            {
-                for(Plant p: user.getPlants())
-                {
-                    Plant currentPlant = plantService.findById(p.getPlantid());
-                    currentPlant.setUser(updateUser);
-                }
-            }
             return userRepository.save(updateUser);
 
     }

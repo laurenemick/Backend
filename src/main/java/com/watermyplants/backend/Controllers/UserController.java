@@ -1,8 +1,10 @@
 package com.watermyplants.backend.Controllers;
 
 import com.watermyplants.backend.Models.User;
+import com.watermyplants.backend.Models.UserMinimum;
 import com.watermyplants.backend.Services.UserServices;
 import io.swagger.annotations.Authorization;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.Servlet;
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.Principal;
@@ -32,7 +35,7 @@ public class UserController
         List<User> myList = userServices.listAll();
         return new ResponseEntity<>(myList, HttpStatus.OK);
     }
-    @PostMapping(value = "/user")
+    @PostMapping(value = "/user", consumes = "application/json")
     public ResponseEntity<?> newUser(@Validated @RequestBody User newUser) throws URISyntaxException
     {
         newUser.setId(0);
@@ -48,22 +51,20 @@ public class UserController
 
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping(value = "/myinfo")
-    @ResponseBody
     public ResponseEntity<?> getUserInfo( Authentication authentication)
     {
         User u = userServices.findByUsername(authentication.getName());
         return new ResponseEntity<>(u, HttpStatus.OK);
     }
 
-    @PutMapping("/user/{id}")
-    public ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable long id)
+    @PutMapping(value = "/user/{id}", consumes = "application/json")
+    public ResponseEntity<?> updateUser(@Valid @RequestBody UserMinimum user, @PathVariable long id)
     {
-        user.setId(id);
         User newUser = userServices.update(user, id);
         return new ResponseEntity<>(newUser, HttpStatus.OK);
     }
 
-    @DeleteMapping("/user/{id}")
+    @DeleteMapping(value = "/user/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable long id,Authentication authentication)
     {
         User requestingUser = userServices.findByUsername(authentication.getName());

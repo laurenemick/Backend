@@ -32,27 +32,25 @@ public class PlantController
            return new ResponseEntity<>(myList, HttpStatus.OK);
     }
 
-    @PostMapping("/plant")
+    @PostMapping(value = "/plant", consumes = "application/json")
     public ResponseEntity<?> addPlant(@RequestBody Plant newPlant, Authentication authentication)
     {
-        plantService.addPlant(newPlant);
-        long id = newPlant.getPlantid();
-        List<Plant> myList = new ArrayList<>();
-        plantService.listPlants(authentication.getName());
-        return new ResponseEntity<>(myList, HttpStatus.CREATED);
+        User user = userServices.findByUsername(authentication.getName());
+        plantService.addPlant(newPlant, user);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PutMapping("/plant/{id}")
-    public ResponseEntity<?> updatePlant(@PathVariable long id, @RequestBody Plant updatedPlant,Authentication authentication)
+    @PutMapping(value = "/plant/{id}", consumes = "application/json")
+    public ResponseEntity<?> updatePlant(@PathVariable long id, @RequestBody Plant updatedPlant)
     {
-        Plant updatedDone = plantService.update(id, updatedPlant, authentication.getName());
+        Plant updatedDone = plantService.update(id, updatedPlant);
         return new ResponseEntity<>(updatedDone, HttpStatus.OK);
     }
 
-    @DeleteMapping("/plant/{id}")
-    public ResponseEntity<?> deletePlant(@PathVariable long id,Authentication authentication)
+    @DeleteMapping(value = "/plant/{id}")
+    public ResponseEntity<?> deletePlant(@PathVariable long id)
     {
-        plantService.delete(id, authentication.getName());
+        plantService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

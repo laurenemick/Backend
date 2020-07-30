@@ -9,6 +9,8 @@ import com.watermyplants.backend.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +23,9 @@ public class UserServicesImpl implements UserServices
     @Autowired
     RoleService roleService;
 
+    @Autowired
+    PlantService plantService;
+
     @Override
     public List<User> listAll() {
         List<User> myList= new ArrayList<>();
@@ -28,6 +33,7 @@ public class UserServicesImpl implements UserServices
         return myList;
     }
 
+    @Transactional
     @Override
     public User save(User user)
     {
@@ -39,6 +45,7 @@ public class UserServicesImpl implements UserServices
                     .orElseThrow(() -> new ResourceNotFoundException("User id " + user.getId() + " not found!"));
             newUser.setId(user.getId());
         }
+        newUser.setPhone(user.getPhone());
 
         newUser.setUsername(user.getUsername()
                 .toLowerCase());
@@ -66,5 +73,52 @@ public class UserServicesImpl implements UserServices
     @Override
     public User findById(long id) {
         return userRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("User " + id + " not found"));
+    }
+
+    @Transactional
+    @Override
+    public User update(User user, long id) {
+            User updateUser = userRepository.findById(id)
+                    .orElseThrow(()->new ResourceNotFoundException("User " + id + " not found"));
+            if(user.getUsername() != null)
+            {
+                updateUser.setUsername(user.getUsername());
+            }
+            if(user.getPassword() != null && user.getPassword() != "")
+            {
+                updateUser.setPasswordNoEncrypt(user.getPassword());
+            }
+            if(user.getEmail() != null)
+            {
+                updateUser.setEmail(user.getEmail());
+            }
+
+            if(user.getPhone() != null)
+            {
+                updateUser.setPhone(user.getPhone());
+            }
+
+            if(user.getPlants().size() > 0)
+            {
+                for(Plant p: user.getPlants())
+                {
+                    Plant currentPlant = plantService.findById(p.getPlantid());
+                    currentPlant.setUser(updateUser);
+                }
+            }
+            return userRepository.save(updateUser);
+
+    }
+
+    @Transactional
+    @Override
+    public void delete(long id, User user) {
+        if(user.getId() != id)
+        {
+            throw new ResourceNotFoundException("You may only delete you own account!");
+        }else
+        {
+            userRepository.deleteById(id);
+        }
     }
 }

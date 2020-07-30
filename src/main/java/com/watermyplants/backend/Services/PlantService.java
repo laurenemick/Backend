@@ -8,7 +8,7 @@ import java.util.List;
 public interface PlantService
 {
     List<Plant> listPlants(String name);
-    void addPlant(Plant newPlant, String name);
+    void addPlant(Plant newPlant);
     Plant update(long id, Plant updatedPlant, String name);
     Plant findById(long id);
     void delete(long id, String Name);

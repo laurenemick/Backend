@@ -3,12 +3,12 @@ package com.watermyplants.backend.Controllers;
 import com.watermyplants.backend.Models.User;
 import com.watermyplants.backend.Services.UserServices;
 import io.swagger.annotations.Authorization;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -49,9 +49,25 @@ public class UserController
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping(value = "/myinfo")
     @ResponseBody
-    public ResponseEntity<?> getUserInfo(Principal principal)
+    public ResponseEntity<?> getUserInfo( Authentication authentication)
     {
-        User u = userServices.findByUsername(principal.getName());
+        User u = userServices.findByUsername(authentication.getName());
         return new ResponseEntity<>(u, HttpStatus.OK);
+    }
+
+    @PutMapping("/user/{id}")
+    public ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable long id)
+    {
+        user.setId(id);
+        User newUser = userServices.update(user, id);
+        return new ResponseEntity<>(newUser, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/user/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable long id,Authentication authentication)
+    {
+        User requestingUser = userServices.findByUsername(authentication.getName());
+        userServices.delete(id, requestingUser);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

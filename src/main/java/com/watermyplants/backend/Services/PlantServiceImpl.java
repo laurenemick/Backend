@@ -26,17 +26,23 @@ public class PlantServiceImpl implements PlantService
     public List<Plant> listPlants(String name) {
         List<Plant> myList = new ArrayList<>();
         User myUser = userRepository.findByUsername(name);
-        for(Plant p: myUser.getPlants())
-        {
-            myList.add(p);
-        }
+        myUser.getPlants().iterator().forEachRemaining(myList::add);
         return myList;
     }
 
     @Override
-    public void addPlant(Plant newPlant, String name) {
-        newPlant.setUser(userRepository.findByUsername(name));
-        userRepository.findByUsername(name).getPlants().add(newPlant);
+    public void addPlant(Plant newPlant) {
+        long userId = newPlant.getPlantid();
+        Plant addedPlant = new Plant();
+        addedPlant.setImageurl(newPlant.getImageurl());
+        addedPlant.setSpecies(newPlant.getSpecies());
+        addedPlant.setNickname(newPlant.getNickname());
+        addedPlant.setH2ofrequency(newPlant.getH2ofrequency());
+        addedPlant.setPlantid(0);
+        User user = userRepository.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User " + userId + " not found"));
+        addedPlant.setUser(user);
+        newPlant = plantRepository.save(addedPlant);
+
     }
 
     @Override

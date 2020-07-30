@@ -16,7 +16,7 @@ public class Plant extends Auditable
     private String nickname;
 
     private String species;
-    @Column(nullable = false)
+
     private String h2ofrequency;
 
     private String imageurl;

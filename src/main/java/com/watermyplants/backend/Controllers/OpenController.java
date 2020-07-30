@@ -74,6 +74,7 @@ public class OpenController
         newuser.setUsername(newminuser.getUsername());
         newuser.setPassword(newminuser.getPassword());
         newuser.setEmail(newminuser.getEmail());
+        newuser.setPhone(newminuser.getPhone());
 
         // add the default role of user
         Set<UserRoles> newRoles = new HashSet<>();
@@ -92,7 +93,7 @@ public class OpenController
         responseHeaders.setLocation(newUserURI);
 
 
-        return new ResponseEntity<>(responseHeaders,
+        return new ResponseEntity<>(null,responseHeaders,
                 HttpStatus.CREATED);
     }
 

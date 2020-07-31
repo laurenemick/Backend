@@ -35,19 +35,6 @@ public class UserController
         List<User> myList = userServices.listAll();
         return new ResponseEntity<>(myList, HttpStatus.OK);
     }
-    @PostMapping(value = "/user", consumes = "application/json")
-    public ResponseEntity<?> newUser(@Validated @RequestBody User newUser) throws URISyntaxException
-    {
-        newUser.setId(0);
-        newUser = userServices.save(newUser);
-        HttpHeaders responseHeaders = new HttpHeaders();
-        URI newUserURI = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(newUser.getId())
-                .toUri();
-
-        return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
-    }
 
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping(value = "/myinfo")

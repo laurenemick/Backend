@@ -33,7 +33,7 @@ public class SeedData implements CommandLineRunner
         roleRepository.save(role2);
         roleRepository.save(role3);
 
-        User a1 = new User("admin", "admin@admin.com", "12345678", "password");
+        User a1 = new User("admin", "admin@admin.com", "12345678", "password", "http");
         a1.setPasswordNoEncrypt("password");
         a1.setId(1);
         a1.getRoles().add(new UserRoles(a1,role1));

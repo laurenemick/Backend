@@ -45,6 +45,7 @@ public class UserServicesImpl implements UserServices
         newUser.setPasswordNoEncrypt(user.getPassword());
         newUser.setEmail(user.getEmail()
                 .toLowerCase());
+        newUser.setImageurl(user.getImageurl());
 
         newUser.getRoles()
                 .clear();

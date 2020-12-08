@@ -31,6 +31,8 @@ public class User extends Auditable
     @Column(nullable = false)
     private String password;
 
+    private String imageurl;
+
     @OneToMany(mappedBy = "user",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
@@ -44,12 +46,13 @@ public class User extends Auditable
     public User() {
     }
 
-    public User(String username, String email, String phone, String password) {
+    public User(String username, String email, String phone, String password, String imageurl) {
         this.username = username;
         this.email = email;
         this.phone = phone;
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         this.password = passwordEncoder.encode(password);
+        this.imageurl = imageurl;
     }
 
     public long getId() {
@@ -112,6 +115,16 @@ public class User extends Auditable
 
     public void setPlants(List<Plant> plants) {
         this.plants = plants;
+    }
+
+    public String getImageurl()
+    {
+        return imageurl;
+    }
+
+    public void setImageurl(String imageurl)
+    {
+        this.imageurl = imageurl;
     }
 
     @JsonIgnore

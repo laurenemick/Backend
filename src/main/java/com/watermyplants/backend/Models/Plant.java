@@ -16,7 +16,7 @@ public class Plant extends Auditable
     private String nickname;
 
     private String species;
-    @Column(nullable = false)
+
     private String h2ofrequency;
 
     private String imageurl;
@@ -24,17 +24,18 @@ public class Plant extends Auditable
     public Plant() {
     }
 
-    public Plant(String nickname, String species, String h2ofrequency, String imageurl) {
+    public Plant(String nickname, String species, String h2ofrequency, String imageurl, User user) {
         this.nickname = nickname;
         this.species = species;
         this.h2ofrequency = h2ofrequency;
         this.imageurl = imageurl;
+        this.user = user;
     }
 
     @ManyToOne
     @JoinColumn(name = "id",
-            nullable = false)
-    @JsonIgnoreProperties(value = "plants", allowSetters = true)
+        nullable = false)
+    @JsonIgnoreProperties(value = {"plants", "user", "roles"}, allowSetters = true)
     private User user;
 
     public long getPlantid() {

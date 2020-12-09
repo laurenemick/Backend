@@ -108,7 +108,7 @@
 
 
     <build>
-        <finalName>nickussery-watermyplants</finalName>
+        <finalName>laurene-water-me</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

@@ -1,6 +1,7 @@
 package com.watermyplants.backend.Services;
 
 import com.watermyplants.backend.Models.User;
+import com.watermyplants.backend.Models.UserMinimum;
 
 import java.util.List;
 
@@ -13,4 +14,8 @@ public interface UserServices
     User findByUsername(String name);
 
     User findById(long id);
+
+    User update(User user, long id);
+
+    void delete(long id);
 }
